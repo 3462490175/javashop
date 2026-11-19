@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>javashop · 云商城微服务电商系统展示页</title>
+<style>
+/* SECTION: base */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  color:#1e293b;background:#f1f5f9;line-height:1.7;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* SECTION: navbar */
+.nav{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid #e2e8f0;
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#0ea5e9;letter-spacing:.2px}
+.brand .mark{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;background:#0ea5e9;border-radius:8px;color:#fff;font-size:16px}
+.links{display:flex;align-items:center;gap:22px;font-size:14.5px;color:#475569;flex-wrap:wrap}
+.links a:hover{color:#0ea5e9}
+.btn-gh{
+  background:#1e293b;color:#fff;padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease,background .2s;
+}
+.btn-gh:hover{background:#0f172a;transform:translateY(-1px)}
+
+/* SECTION: hero */
+.hero{
+  background:linear-gradient(160deg,#ecfeff 0%,#e0f2fe 45%,#dbeafe 100%);
+  padding:88px 0 76px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:auto -20% -60% -20%;height:340px;
+  background:radial-gradient(ellipse at center,rgba(14,165,233,.16),transparent 65%);pointer-events:none;
+}
+.hero h1{font-size:clamp(30px,5.4vw,54px);font-weight:900;color:#0f172a;letter-spacing:-.5px;line-height:1.25}
+.hero .sub{margin:22px auto 0;max-width:780px;font-size:clamp(15px,2.1vw,18.5px);color:#64748b}
+.hero .sub span{display:block}
+.cta{
+  margin-top:38px;display:inline-flex;align-items:center;gap:9px;
+  background:#0ea5e9;color:#fff;font-size:16px;font-weight:700;padding:14px 34px;border-radius:11px;
+  box-shadow:0 10px 26px rgba(14,165,233,.32);transition:transform .16s ease,box-shadow .2s;
+}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(14,165,233,.4)}
+.tags{margin-top:26px;display:flex;justify-content:center;flex-wrap:wrap;gap:9px}
+.tag{font-size:12.5px;font-weight:600;color:#0369a1;background:rgba(255,255,255,.78);border:1px solid rgba(14,165,233,.22);padding:5px 12px;border-radius:999px}
+
+/* SECTION: stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:-34px auto 0;position:relative;z-index:2}
+.stat{background:#fff;border-radius:14px;padding:20px 16px;text-align:center;box-shadow:0 6px 22px rgba(15,23,42,.07)}
+.stat b{display:block;font-size:26px;font-weight:900;color:#0ea5e9;line-height:1.3}
+.stat i{font-style:normal;font-size:13px;color:#64748b}
+
+/* SECTION: section title */
+.sec{padding:66px 0 8px}
+.sec-head{text-align:center;margin-bottom:38px}
+.sec-head h2{font-size:clamp(23px,3.4vw,32px);font-weight:800;color:#0f172a}
+.sec-head p{margin-top:10px;color:#64748b;font-size:15.5px}
+
+/* SECTION: feature cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.card{
+  background:#fff;border-radius:16px;padding:28px 26px;box-shadow:0 4px 18px rgba(15,23,42,.06);
+  border:1px solid #eef2f7;transition:transform .18s ease,box-shadow .22s;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(15,23,42,.1)}
+.card .ico{font-size:30px;line-height:1;margin-bottom:16px;display:block}
+.card h3{font-size:18px;font-weight:800;color:#0f172a;margin-bottom:10px}
+.card p{font-size:14.5px;color:#64748b}
+.card code{background:#f1f5f9;color:#0369a1;padding:1px 6px;border-radius:5px;font-size:13px}
+
+/* SECTION: modules */
+.modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.mod{background:#fff;border:1px solid #e8eef5;border-left:4px solid #0ea5e9;border-radius:12px;padding:16px 18px}
+.mod h4{font-size:15px;font-weight:800;color:#0f172a;margin-bottom:6px}
+.mod p{font-size:13.2px;color:#64748b;line-height:1.6}
+
+/* SECTION: arch flow */
+.flow{background:#fff;border:1px solid #e8eef5;border-radius:16px;padding:26px 22px;box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:9px 0}
+.node{background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:9px 16px;font-size:13.5px;font-weight:700;color:#334155;white-space:nowrap}
+.node.hot{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+.node.alt{background:#f0f9ff;border-color:#7dd3fc;color:#0369a1}
+.arrow{color:#94a3b8;font-size:15px;font-weight:700}
+.flow-cap{text-align:center;font-size:12.8px;color:#94a3b8;margin-top:14px}
+
+/* SECTION: db table */
+.table-box{background:#fff;border:1px solid #e8eef5;border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:13px 18px;text-align:left;font-size:14px;border-bottom:1px solid #f1f5f9}
+th{background:#f8fafc;color:#475569;font-weight:800;font-size:13px;letter-spacing:.4px}
+td:first-child{font-weight:700;color:#0f172a;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13.5px}
+td{color:#64748b}
+tr:last-child td{border-bottom:none}
+
+/* SECTION: footer */
+.foot{margin-top:70px;background:#0f172a;color:#94a3b8;padding:40px 0;text-align:center;font-size:13.5px}
+.foot b{color:#e2e8f0;font-size:15px;display:block;margin-bottom:8px}
+.foot a{color:#38bdf8;font-weight:600}
+.foot a:hover{text-decoration:underline}
+.foot .line{margin-top:14px;padding-top:16px;border-top:1px solid #1e293b;font-size:12.5px}
+
+/* SECTION: responsive */
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-26px}
+  .hero{padding:62px 0 60px}
+  .nav-in{height:auto;padding:12px 0}
+  .links{display:none}
+  .sec{padding:52px 0 6px}
+  .card{padding:24px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- SECTION: navbar -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <div class="brand"><span class="mark">🛒</span>javashop</div>
+    <nav class="links">
+      <a href="#features">核心特性</a>
+      <a href="#modules">服务模块</a>
+      <a href="#arch">架构链路</a>
+      <a href="#db">数据分域</a>
+    </nav>
+    <a class="btn-gh" href="https://github.com/3462490175/javashop" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub 仓库
+    </a>
+  </div>
+</header>
+
+<!-- SECTION: hero -->
+<section class="hero">
+  <div class="wrap">
+    <h1>云商城 微服务电商系统展示页</h1>
+    <p class="sub">
+      <span>基于 Spring Boot 2.2 + Spring Cloud Alibaba 构建的企业级分布式电商平台。</span>
+      <span>涵盖商品、订单、秒杀、搜索全链路，实践微服务治理与分布式事务。</span>
+    </p>
+    <a class="cta" href="https://github.com/3462490175/javashop" target="_blank" rel="noopener">查看源码 →</a>
+    <div class="tags">
+      <span class="tag">Spring Cloud Alibaba</span>
+      <span class="tag">Nacos</span>
+      <span class="tag">Gateway</span>
+      <span class="tag">Seata</span>
+      <span class="tag">RocketMQ</span>
+      <span class="tag">Redisson</span>
+      <span class="tag">Elasticsearch</span>
+      <span class="tag">Canal</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- SECTION: stats -->
+  <div class="stats">
+    <div class="stat"><b>14+</b><i>微服务模块</i></div>
+    <div class="stat"><b>6</b><i>业务数据库分域</i></div>
+    <div class="stat"><b>21</b><i>核心业务表</i></div>
+    <div class="stat"><b>12k+</b><i>秒杀商品数据</i></div>
+  </div>
+</div>
+
+<!-- SECTION: features -->
+<section class="sec wrap" id="features">
+  <div class="sec-head">
+    <h2>核心特性</h2>
+    <p>覆盖分布式系统核心命题的六大能力实践</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <span class="ico">⚡</span>
+      <h3>微服务架构治理</h3>
+      <p>基于 <code>Spring Cloud Alibaba</code> 完成服务拆分与治理，Nacos 承担注册发现与统一配置中心，OpenFeign 实现声明式远程调用，服务间解耦清晰。</p>
+    </div>
+    <div class="card">
+      <span class="ico">🛡️</span>
+      <h3>统一网关与限流</h3>
+      <p>Gateway 作为系统唯一入口，集中处理路由转发、鉴权与跨域；集成 Sentinel 实现流量控制与熔断降级，保障高并发下核心链路稳定。</p>
+    </div>
+    <div class="card">
+      <span class="ico">🔄</span>
+      <h3>分布式事务</h3>
+      <p>使用 <code>Seata AT 模式</code> 跨 goods、order 服务保证数据一致性，配合本地事务与全局事务协同，解决下单扣库存的超卖与脏数据问题。</p>
+    </div>
+    <div class="card">
+      <span class="ico">📨</span>
+      <h3>消息驱动解耦</h3>
+      <p>RocketMQ 承载订单异步通知、支付回调与流量削峰，将非核心链路从主流程剥离，显著降低下单响应时间并提升系统吞吐。</p>
+    </div>
+    <div class="card">
+      <span class="ico">🔒</span>
+      <h3>缓存与分布式锁</h3>
+      <p>Redis + Redisson 构建多级缓存体系，分布式锁保障秒杀库存扣减的原子性；结合布隆过滤器与逻辑过期策略防范缓存击穿与穿透。</p>
+    </div>
+    <div class="card">
+      <span class="ico">🔍</span>
+      <h3>搜索引擎与数据同步</h3>
+      <p>Elasticsearch + IK 中文分词支撑商品全文检索与高亮；Canal 监听 MySQL binlog 实现数据库到索引的准实时增量同步。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: modules -->
+<section class="sec wrap" id="modules">
+  <div class="sec-head">
+    <h2>服务模块</h2>
+    <p>按业务边界垂直拆分，独立部署、独立演进</p>
+  </div>
+  <div class="modules">
+    <div class="mod"><h4>mall-gateway</h4><p>API 网关 · 路由 / 鉴权 / 限流 / 跨域</p></div>
+    <div class="mod"><h4>mall-goods-service</h4><p>商品服务 · SPU / SKU / 品牌 / 分类 / 广告位</p></div>
+    <div class="mod"><h4>mall-order-service</h4><p>订单服务 · 下单 / 状态流转 / 分布式事务</p></div>
+    <div class="mod"><h4>mall-pay-service</h4><p>支付服务 · 支付流水 / 异步回调</p></div>
+    <div class="mod"><h4>mall-seckill-service</h4><p>秒杀服务 · 库存预扣 / 防刷 / 削峰</p></div>
+    <div class="mod"><h4>mall-search-service</h4><p>搜索服务 · ES 索引与检索能力</p></div>
+    <div class="mod"><h4>mall-cart-service</h4><p>购物车服务 · Redis 持久化存储</p></div>
+    <div class="mod"><h4>mall-user-service</h4><p>用户服务 · 登录注册 / 收货地址</p></div>
+    <div class="mod"><h4>mall-permission-service</h4><p>权限服务 · 角色与资源访问控制</p></div>
+    <div class="mod"><h4>mall-item-web</h4><p>页面服务 · 商品详情静态化渲染</p></div>
+    <div class="mod"><h4>mall-canal-service</h4><p>数据同步 · binlog 监听与索引更新</p></div>
+    <div class="mod"><h4>mall-util / common</h4><p>公共模块 · JWT / 加密 / 统一响应体</p></div>
+  </div>
+</section>
+
+<!-- SECTION: arch -->
+<section class="sec wrap" id="arch">
+  <div class="sec-head">
+    <h2>请求链路</h2>
+    <p>一次下单请求在分布式系统中的完整流转</p>
+  </div>
+  <div class="flow">
+    <div class="flow-row">
+      <span class="node">客户端</span><span class="arrow">→</span>
+      <span class="node hot">Gateway 网关</span><span class="arrow">→</span>
+      <span class="node">Sentinel 限流</span><span class="arrow">→</span>
+      <span class="node">鉴权服务</span>
+    </div>
+    <div class="flow-row">
+      <span class="arrow">↓</span>
+    </div>
+    <div class="flow-row">
+      <span class="node alt">商品服务</span>
+      <span class="node alt">订单服务</span>
+      <span class="node alt">秒杀服务</span>
+      <span class="node alt">支付服务</span>
+    </div>
+    <div class="flow-row">
+      <span class="arrow">↓</span><span class="arrow">↓</span><span class="arrow">↓</span>
+    </div>
+    <div class="flow-row">
+      <span class="node">Seata 分布式事务</span>
+      <span class="node">RocketMQ 异步消息</span>
+      <span class="node">Redisson 分布式锁</span>
+    </div>
+    <div class="flow-row">
+      <span class="arrow">↓</span>
+    </div>
+    <div class="flow-row">
+      <span class="node">MySQL 业务库</span>
+      <span class="node">Canal binlog</span>
+      <span class="node hot">Elasticsearch</span>
+    </div>
+    <p class="flow-cap">Nacos 贯穿全链路，提供服务注册发现与配置统一管理</p>
+  </div>
+</section>
+
+<!-- SECTION: db -->
+<section class="sec wrap" id="db">
+  <div class="sec-head">
+    <h2>数据分域</h2>
+    <p>按服务边界拆库，避免跨服务直连表</p>
+  </div>
+  <div class="table-box">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>数据库</th><th>归属服务</th><th>核心表</th><th>职责</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>shop_goods</td><td>商品服务</td><td>spu / sku / brand / category / ad_items</td><td>商品主数据与分类体系</td></tr>
+          <tr><td>shop_order</td><td>订单服务</td><td>order / order_sku</td><td>订单主表与明细快照</td></tr>
+          <tr><td>shop_seckill</td><td>秒杀服务</td><td>seckill_goods / seckill_order</td><td>秒杀场次与活动订单</td></tr>
+          <tr><td>shop_user</td><td>用户服务</td><td>user_info / address / provinces</td><td>用户账号与收货地址</td></tr>
+          <tr><td>shop_pay</td><td>支付服务</td><td>pay_log</td><td>支付流水与回调记录</td></tr>
+          <tr><td>shop_permission</td><td>权限服务</td><td>permission / role_info / role_permission</td><td>资源与角色访问控制</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: techstack -->
+<section class="sec wrap" id="tech">
+  <div class="sec-head">
+    <h2>技术栈</h2>
+    <p>主流开源组件构成的完整技术体系</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <span class="ico">🧱</span>
+      <h3>基础框架</h3>
+      <p>Spring Boot 2.2.10 · Spring Cloud Hoxton · Spring Cloud Alibaba 2.2.1 · MyBatis-Plus · Thymeleaf · JDK 8</p>
+    </div>
+    <div class="card">
+      <span class="ico">🧩</span>
+      <h3>注册与配置</h3>
+      <p>Nacos 2.x 注册中心与配置中心 · OpenFeign 声明式调用 · Ribbon 负载均衡 · Sentinel 流量防护</p>
+    </div>
+    <div class="card">
+      <span class="ico">🗄️</span>
+      <h3>存储与检索</h3>
+      <p>MySQL 8.4 分库存储 · Redis 缓存与购物车 · MongoDB 购物车持久化 · Elasticsearch 6.8 + IK 分词</p>
+    </div>
+    <div class="card">
+      <span class="ico">🔧</span>
+      <h3>中间件</h3>
+      <p>RocketMQ 4.7 消息队列 · Seata 分布式事务 · Canal binlog 订阅 · Redisson 分布式锁 · Nginx 静态化与缓存</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: footer -->
+<footer class="foot">
+  <div class="wrap">
+    <b>javashop · 云商城微服务电商系统</b>
+    完整源码与部署文档见
+    <a href="https://github.com/3462490175/javashop" target="_blank" rel="noopener">GitHub 仓库</a>
+    <div class="line">本项目为微服务架构学习实践，涵盖服务治理、分布式事务、消息驱动与搜索引擎等核心场景。</div>
+  </div>
+</footer>
+
+<script>
+/* SECTION: smooth-anchor */
+(function () {
+  var links = document.querySelectorAll('.links a[href^="#"]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', function (e) {
+      var id = this.getAttribute('href');
+      var el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      var top = el.getBoundingClientRect().top + window.pageYOffset - 72;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  }
+})();
+
+/* SECTION: reveal-on-scroll */
+(function () {
+  var cards = document.querySelectorAll('.card, .mod, .stat, .flow, .table-box');
+  if (!('IntersectionObserver' in window)) return;
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].style.opacity = '0';
+    cards[i].style.transform = 'translateY(18px)';
+    cards[i].style.transition = 'opacity .5s ease, transform .5s ease';
+  }
+  var io = new IntersectionObserver(function (entries) {
+    for (var j = 0; j < entries.length; j++) {
+      if (entries[j].isIntersecting) {
+        entries[j].target.style.opacity = '1';
+        entries[j].target.style.transform = 'translateY(0)';
+        io.unobserve(entries[j].target);
+      }
+    }
+  }, { threshold: 0.12 });
+  for (var k = 0; k < cards.length; k++) io.observe(cards[k]);
+})();
+</script>
+</body>
+</html>
